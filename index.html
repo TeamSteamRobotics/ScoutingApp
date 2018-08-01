@@ -4,44 +4,8 @@
     <meta charset="UTF-8">
     <title>Team 5119 Scouting App</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./main.css">
-    <script>
-        require("./renderer.js");
-        const fs = require('fs');
-        const QRCode = require('qrcode');
-
-        $(document).ready(function() {
-            if (fs.existsSync('savedData.json')) {
-                fs.readFile('savedData.json', (err, rawData) => {
-                    if (err) throw err;
-                    let data = JSON.parse(rawData);
-                    $.each(data, function(key, value){
-                        console.log(key + '\t' + value);
-                        $('#' + key).val(value);
-                    });
-                });
-            }
-        });
-
-        function makeJSON() {
-            //Before you read this next bit of code and decide you hate me forever, see if you could do it better yourself. If you can, make a PR. - @amrelk
-            let matchForm = $('#matchForm')[0];
-            let matchData = {};
-            for (let i = 0; i < matchForm.length; i++){
-                console.log(matchForm[i].id + '\t:\t' + matchForm[i].value);
-                matchData[matchForm[i].id] = matchForm[i].value;
-            }
-            return matchData
-        }
-
-        function saveJSON() {
-            fs.writeFile('savedData.json', JSON.stringify(makeJSON(), null, 2), (err) => {if (err) throw err;});
-        }
-
-        function makeQR() {
-            QRCode.toCanvas($('#qrCanvas')[0], JSON.stringify(makeJSON()))
-        }
-    </script>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./scripts.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -69,7 +33,7 @@
     </div>
 
     <!-- the match form -->
-    <form id="matchForm">
+    <form id="matchForm" class="mb-4">
         <div class="form-row">
             <div class="form-group col-4">
                 <label for="inputYourName">Name</label>

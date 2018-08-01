@@ -1,0 +1,11 @@
+{
+  "version": "0.1.0",
+  "standard": {
+    "inputYourName": "text",
+    "inputTeamNumber": "num",
+    "inputMatches": "text",
+    "inputAutoSwitch": "num/count",
+    "inputAutoScale": "num/count",
+    "inputAutoLineCross": "num/count"
+  }
+}
