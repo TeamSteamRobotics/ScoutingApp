@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./main.css">
+    <title>Team 5119 Scouting App</title>
+    <script>
+        const QRCode = require('qrcode')
+
+        let inst = setInterval(update, 100)
+
+        function update() {
+            $("#test1").innerHTML = "cpu:" + process.cpuUsage().system.toString() + "<br>memory:" + (process.getSystemMemoryInfo().total - process.getSystemMemoryInfo().free).toString()
+        }
+
+        function makeQR() {
+            $(".qr-section").toggle("hidden");
+            QRCode.toCanvas($('#qrCanvas')[0], $('#inputYourName').val() + ',' + $('#inputTeamNumber').val() + ',' + $('#inputMatches').val())
+        }
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <!-- QR Code Modal -->
+    <div class="modal fade" id="qrModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrModalLabel">QR Code</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <canvas id="qrCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label for="inputYourName">Name</label>
+                <input type="text" class="form-control" id="inputYourName" placeholder="Your Name">
+            </div>
+            <div class="form-group col-3">
+                <label for="inputTeamNumber">Team Number</label>
+                <input type="text" class="form-control" id="inputTeamNumber" placeholder="1763">
+            </div>
+            <div class="form-group col-5">
+                <label for="inputMatches">Matches</label>
+                <input type="text" class="form-control" id="inputMatches" placeholder="7,10,14,38,...">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-block btn-outline-primary" onclick="makeQR()" data-toggle="modal" data-target="#qrModal">submit</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    require("./renderer.js")
+</script>
+</html>
