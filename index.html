@@ -2,21 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Team 5119 Scouting App</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./main.css">
-    <title>Team 5119 Scouting App</title>
     <script>
-        const QRCode = require('qrcode')
+        require("./renderer.js");
+        const fs = require('fs');
+        const QRCode = require('qrcode');
 
-        let inst = setInterval(update, 100)
+        $(document).ready(function() {
+            if (fs.existsSync('savedData.json')) {
+                fs.readFile('savedData.json', (err, rawData) => {
+                    if (err) throw err;
+                    let data = JSON.parse(rawData);
+                    $.each(data, function(key, value){
+                        console.log(key + '\t' + value);
+                        $('#' + key).val(value);
+                    });
+                });
+            }
+        });
 
-        function update() {
-            $("#test1").innerHTML = "cpu:" + process.cpuUsage().system.toString() + "<br>memory:" + (process.getSystemMemoryInfo().total - process.getSystemMemoryInfo().free).toString()
+        function makeJSON() {
+            //Before you read this next bit of code and decide you hate me forever, see if you could do it better yourself. If you can, make a PR. - @amrelk
+            let matchForm = $('#matchForm')[0];
+            let matchData = {};
+            for (let i = 0; i < matchForm.length; i++){
+                console.log(matchForm[i].id + '\t:\t' + matchForm[i].value);
+                matchData[matchForm[i].id] = matchForm[i].value;
+            }
+            return matchData
+        }
+
+        function saveJSON() {
+            fs.writeFile('savedData.json', JSON.stringify(makeJSON(), null, 2), (err) => {if (err) throw err;});
         }
 
         function makeQR() {
-            $(".qr-section").toggle("hidden");
-            QRCode.toCanvas($('#qrCanvas')[0], $('#inputYourName').val() + ',' + $('#inputTeamNumber').val() + ',' + $('#inputMatches').val())
+            QRCode.toCanvas($('#qrCanvas')[0], JSON.stringify(makeJSON()))
         }
     </script>
 </head>
@@ -27,7 +50,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="qrModalLabel">QR Code</h5>
+                    <h5 class="modal-title" id="qrModalLabel">QR</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -44,7 +67,9 @@
             </div>
         </div>
     </div>
-    <form>
+
+    <!-- the match form -->
+    <form id="matchForm">
         <div class="form-row">
             <div class="form-group col-4">
                 <label for="inputYourName">Name</label>
@@ -62,12 +87,12 @@
     </form>
     <div class="row">
         <div class="col">
-            <button class="btn btn-block btn-outline-primary" onclick="makeQR()" data-toggle="modal" data-target="#qrModal">submit</button>
+            <button class="btn btn-block btn-outline-secondary" onclick="saveJSON()">save data</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-block btn-outline-primary" onclick="makeQR()" data-toggle="modal" data-target="#qrModal">generate QR</button>
         </div>
     </div>
 </div>
 </body>
-<script>
-    require("./renderer.js")
-</script>
 </html>
