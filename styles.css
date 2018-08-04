@@ -6,6 +6,10 @@ label {
     color: #bdbdbd;
 }
 
+.form-heading {
+    color: #bdbdbd;
+}
+
 button {
     -webkit-app-region: no-drag;
 }
