@@ -45,7 +45,7 @@
     </div>
 
     <!-- the match form -->
-    <form id="matchForm" class="mb-4">
+    <form id="matchData2018Form" standard="matchData2018" class="mb-4">
         <div class="form-row">
             <div class="form-group col-4">
                 <label for="inputYourName">name</label>
@@ -116,10 +116,10 @@
     </form>
     <div class="row">
         <div class="col">
-            <button class="btn btn-block btn-outline-secondary" onclick="saveJSON()">save data</button>
+            <button class="btn btn-block btn-outline-secondary" onclick="saveJSON('matchData2018')">save data</button>
         </div>
         <div class="col">
-            <button class="btn btn-block btn-outline-primary" onclick="makeQR()" data-toggle="modal" data-target="#qrModal">generate QR</button>
+            <button class="btn btn-block btn-outline-primary" onclick="makeQR('matchData2018')" data-toggle="modal" data-target="#qrModal">generate QR</button>
         </div>
     </div>
 </div>
