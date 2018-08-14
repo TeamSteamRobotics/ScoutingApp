@@ -46,7 +46,10 @@ function compressJSON(uncompressed, standard) {
                         } else {
                             compressed.data.push(uncompressed[key].length)
                         }
+                        break;
                 }
+            } else {
+                compressed.data.push('');
             }
         });
         return compressed;
