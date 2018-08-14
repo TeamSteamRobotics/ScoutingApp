@@ -33,8 +33,8 @@ function compressJSON(uncompressed, standard) {
         compressed['standard'] = standard;
         compressed['version'] = JSON.parse(rawStandard).version;
         compressed['data'] = [];
-        standard = JSON.parse(rawStandard).standard;
-        $.each(standard, function(key, value) {
+        let standardSpec = JSON.parse(rawStandard).standard;
+        $.each(standardSpec, function (key, value) {
             if (uncompressed.hasOwnProperty(key)) {
                 switch (value) {
                     case "text":
