@@ -6,6 +6,9 @@
     "inputMatches": "text",
     "inputAutoSwitch": "num/count",
     "inputAutoScale": "num/count",
-    "inputAutoLineCross": "num/count"
+    "inputAutoLineCross": "num/count",
+    "inputTeleopOwnSwitch": "num/count",
+    "inputTeleopScale": "num/count",
+    "inputTeleopOpponentSwitch": "num/count"
   }
 }
