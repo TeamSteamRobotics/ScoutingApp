@@ -15,15 +15,15 @@ $(document).ready(function() {
     }
 });
 
-function makeJSON() {
+function makeJSON(form) {
     //Before you read this next bit of code and decide you hate me forever, see if you could do it better yourself. If you can, make a PR. - @amrelk
-    let matchForm = $('#matchForm')[0];
-    let matchData = {};
-    for (let i = 0; i < matchForm.length; i++){
-        console.log(matchForm[i].id + '\t:\t' + matchForm[i].value);
-        matchData[matchForm[i].id] = matchForm[i].value;
+    form = $('#' + form + 'Form')[0];
+    let data = {};
+    for (let i = 0; i < form.length; i++){
+        console.log(form[i].id + '\t:\t' + form[i].value);
+        data[form[i].id] = form[i].value;
     }
-    return matchData
+    return data
 }
 
 function compressJSON(uncompressed, standard) {
@@ -33,8 +33,8 @@ function compressJSON(uncompressed, standard) {
         compressed['standard'] = standard;
         compressed['version'] = JSON.parse(rawStandard).version;
         compressed['data'] = [];
-        standard = JSON.parse(rawStandard).standard;
-        $.each(standard, function(key, value) {
+        let standardSpec = JSON.parse(rawStandard).standard;
+        $.each(standardSpec, function (key, value) {
             if (uncompressed.hasOwnProperty(key)) {
                 switch (value) {
                     case "text":
@@ -46,7 +46,10 @@ function compressJSON(uncompressed, standard) {
                         } else {
                             compressed.data.push(uncompressed[key].length)
                         }
+                        break;
                 }
+            } else {
+                compressed.data.push('');
             }
         });
         return compressed;
@@ -58,10 +61,10 @@ function compressJSON(uncompressed, standard) {
     }
 }
 
-function saveJSON() {
-    fs.writeFile('savedData.json', JSON.stringify(makeJSON(), null, 2), (err) => {if (err) throw err;});
+function saveJSON(form) {
+    fs.writeFile('savedData.json', JSON.stringify(makeJSON(form), null, 2), (err) => {if (err) throw err;});
 }
 
-function makeQR() {
-    QRCode.toCanvas($('#qrCanvas')[0], JSON.stringify(compressJSON(makeJSON(), 'matchData2018')));
+function makeQR(form) {
+    QRCode.toCanvas($('#qrCanvas')[0], JSON.stringify(compressJSON(makeJSON(form), $('#' + form +'Form').attr('standard'))));
 }
